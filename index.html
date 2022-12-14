@@ -13,7 +13,7 @@
     <style>
         @font-face {
             font-family: 'Cupertino Icons';
-            src: url(https://flutter.github.io/assets-for-api-docs/assets/cupertino/CupertinoIcons.ttf);
+            src: url(CupertinoIcons.ttf);
         }
 
         @font-face {
@@ -59,17 +59,29 @@
                     style="font-size: 36px; margin-top: 4px; margin-right: 16px;">info_circle</i>
                 <div style="display: block;">
                     <div style="font-size: 18px;">注意</div>
-                    <div>新增病例以核酸检测呈阳性为判断依据，所有数据仅供参考。</div>
+                    <div>新增病例以核酸检测或抗原自测呈阳性为判断依据，所有数据仅供参考。</div>
                 </div>
             </div>
         </div>
         <br />
         <div class="mdui-card">
             <div class="mdui-card-content" style="padding-top: 0;">
-                <p>每日新增</p>
+                <p>近 7 日新增</p>
                 <canvas id="chart-add"></canvas>
             </div>
         </div>
+        <br />
+        <div class="mdui-card">
+            <div class="mdui-card-content" style="padding-top: 0;">
+                <p>近 7 日累计</p>
+                <canvas id="chart-total"></canvas>
+            </div>
+        </div>
+        <br /><br />
+        <div class="mdui-typo" style="text-align: center; opacity: .64;">
+            <p>© TGX 2022</p>
+        </div>
+        <br />
     </div>
     <script>
         var $ = mdui.$;
@@ -104,6 +116,22 @@
                 success: res => {
                     var addLabels = [];
                     var addGrand = [];
+                    var totalGrand = [];
+
+                    var totalCount = 0;
+                    for (let i = res.length - 7; i < res.length; i++) {
+                        var dailyAdd = 0;
+                        for (let gradeIndex = 0; gradeIndex < 3; gradeIndex++) {
+                            for (let floorIndex = 0; floorIndex < 4; floorIndex++) {
+                                dailyAdd += res[i].data[gradeIndex][floorIndex];
+                            }
+                        }
+                        addGrand.push(dailyAdd);
+                        totalGrand.push(totalCount + dailyAdd);
+                        addLabels.push(`${res[i].date[1]}.${res[i].date[2]}`);
+
+                        totalCount += dailyAdd;
+                    }
 
                     new Chart($('#chart-add'), {
                         type: 'line',
@@ -112,6 +140,20 @@
                             datasets: [{
                                 label: '每日新增',
                                 data: addGrand,
+                                backgroundColor: ['#3f51b5'],
+                                borderColor: ['#3f51b5'],
+                                lineTension: .5
+                            }]
+                        }
+                    });
+
+                    new Chart($('#chart-total'), {
+                        type: 'line',
+                        data: {
+                            labels: addLabels,
+                            datasets: [{
+                                label: '每日累计',
+                                data: totalGrand,
                                 backgroundColor: ['#3f51b5'],
                                 borderColor: ['#3f51b5'],
                                 lineTension: .5
