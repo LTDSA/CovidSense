@@ -140,6 +140,7 @@
         var addChart;
         var totalChart;
         var distributionChart;
+        var firstLoad = true;
 
         Date.prototype.format = function (fmt) {
             var o = {
@@ -194,21 +195,23 @@
                 }
             });
 
-            new Chart($('#overview-distribution'), {
-                type: 'pie',
-                data: {
-                    labels: distributionNames,
-                    datasets: [{
-                        data: gradeDistribution,
-                        backgroundColor: ['#4CAF50', '#2196F3', '#E91E63', '#9C27B0', '#FF9800', '#00BCD4']
-                    }]
-                },
-                options: {
-                    layout: {
-                        padding: 32
+            if (firstLoad) {
+                var distributionChart = new Chart($('#overview-distribution'), {
+                    type: 'pie',
+                    data: {
+                        labels: distributionNames,
+                        datasets: [{
+                            data: gradeDistribution,
+                            backgroundColor: ['#4CAF50', '#2196F3', '#E91E63', '#9C27B0', '#FF9800', '#00BCD4']
+                        }]
+                    },
+                    options: {
+                        layout: {
+                            padding: 32
+                        }
                     }
-                }
-            });
+                });
+            }
 
             $('#overview-total').text(totalCount);
 
@@ -253,7 +256,7 @@
                 //totalCount += dailyAdd;
             }
 
-            $('#overview-add').text(addGrand[addGrand.length]);
+            $('#overview-add').text(addGrand[addGrand.length - 1]);
 
             if (typeof addChart != 'undefined' && typeof totalChart != 'undefined') {
                 addChart.destroy();
@@ -287,6 +290,7 @@
                     }]
                 }
             });
+            firstLoad = false;
         }
 
         getInit();
