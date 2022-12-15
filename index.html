@@ -168,6 +168,9 @@
         function getInit() {
             $.ajax({
                 url: 'data.json',
+                data: {
+                    timestamp: Math.round(new Date() / 100000)
+                },
                 dataType: 'json',
                 success: res => {
                     dataArr = res;
