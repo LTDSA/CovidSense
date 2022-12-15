@@ -36,7 +36,7 @@
 
         .mdui-card,
         .mdui-list-item {
-            border-radius: 6px;
+            border-radius: 8px;
         }
 
         .mdui-card {
@@ -71,18 +71,27 @@
             <div class="mdui-card-content">
                 <div class="mdui-row-xs-2">
                     <div class="mdui-col">
-                        <div class="mdui-typo" style="border: 1.5px #eaeaea solid; border-radius: 4px; padding: 6px; padding-left: 8px;">
+                        <div class="mdui-typo"
+                            style="border: 1.5px #eaeaea solid; border-radius: 6px; padding: 6px; padding-left: 12px;">
                             <p style="margin-bottom: 2px; opacity: .64;">累计新增</p>
                             <h2 id="overview-total" style="margin-top: 0;">0</h2>
                         </div>
                     </div>
                     <div class="mdui-col">
-                        <div class="mdui-typo" style="border: 1.5px #eaeaea solid; border-radius: 4px; padding: 6px; padding-left: 8px;"">
+                        <div class="mdui-typo"
+                            style="border: 1.5px #eaeaea solid; border-radius: 6px; padding: 6px; padding-left: 12px;">
                             <p style="margin-bottom: 2px; opacity: .64;">今日新增</p>
                             <h2 id="overview-add" style="margin-top: 0;">0</h2>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <br />
+        <div class="mdui-card">
+            <div class="mdui-card-content" style="padding-top: 0;">
+                <p>病例分布情况</p>
+                <canvas id="overview-distribution"></canvas>
             </div>
         </div>
         <div class="mdui-row-xs-2">
@@ -92,8 +101,12 @@
                 </div>
             </div>
             <div class="mdui-col">
-                <select class="mdui-select mdui-float-right mdui-m-t-3">
-                    <option>全部</option>
+                <select id="grade-select" class="mdui-select mdui-float-right mdui-m-t-3">
+                    <option value="0">全部</option>
+                    <option value="1">高一</option>
+                    <option value="2">高二</option>
+                    <option value="3">高三</option>
+                    <option value="4">教师</option>
                 </select>
             </div>
         </div>
@@ -123,6 +136,10 @@
     </div>
     <script>
         var $ = mdui.$;
+        var dataArr = [];
+        var addChart;
+        var totalChart;
+        var distributionChart;
 
         Date.prototype.format = function (fmt) {
             var o = {
@@ -152,68 +169,128 @@
                 url: 'data.json',
                 dataType: 'json',
                 success: res => {
-                    var addLabels = [];
-                    var addGrand = [];
-                    var totalGrand = [];
+                    dataArr = res;
+                    getData();
+                }
+            });
+        }
 
-                    var totalCount = 0;
+        function getData(grade) {
+            grade = grade || 0;
+            var addLabels = [];
+            var addGrand = [];
+            var totalGrand = [];
+            var gradeDistribution = [0, 0, 0, 0];
+            var distributionNames = ['高一', '高二', '高三', '教师'];
 
-                    res.forEach(i => {
-                        for (let gradeIndex = 0; gradeIndex < i.data.length; gradeIndex++) {
-                            for (let floorIndex = 0; floorIndex < i.data[gradeIndex].length; floorIndex++) {
-                                totalCount += i.data[gradeIndex][floorIndex];
-                            }
-                        }
-                    });
+            var totalCount = 0;
 
-                    $('#overview-total').text(totalCount);
-
-                    for (let i = res.length - 7; i < res.length; i++) {
-                        var dailyAdd = 0;
-                        for (let gradeIndex = 0; gradeIndex < res[i].data.length; gradeIndex++) {
-                            for (let floorIndex = 0; floorIndex < res[i].data[gradeIndex].length; floorIndex++) {
-                                dailyAdd += res[i].data[gradeIndex][floorIndex];
-                            }
-                        }
-                        addGrand.push(dailyAdd);
-                        totalGrand.push(totalCount + dailyAdd);
-                        addLabels.push(`${res[i].date[1]}.${res[i].date[2]}`);
-
-                        //totalCount += dailyAdd;
+            dataArr.forEach(i => {
+                for (let gradeIndex = 0; gradeIndex < i.data.length; gradeIndex++) {
+                    for (let floorIndex = 0; floorIndex < i.data[gradeIndex].length; floorIndex++) {
+                        totalCount += i.data[gradeIndex][floorIndex];
+                        gradeDistribution[gradeIndex] += i.data[gradeIndex][floorIndex];
                     }
+                }
+            });
 
-                    new Chart($('#chart-add'), {
-                        type: 'line',
-                        data: {
-                            labels: addLabels,
-                            datasets: [{
-                                label: '每日新增',
-                                data: addGrand,
-                                backgroundColor: ['#3f51b5'],
-                                borderColor: ['#3f51b5'],
-                                lineTension: .5
-                            }]
-                        }
-                    });
+            new Chart($('#overview-distribution'), {
+                type: 'pie',
+                data: {
+                    labels: distributionNames,
+                    datasets: [{
+                        data: gradeDistribution,
+                        backgroundColor: ['#4CAF50', '#2196F3', '#E91E63', '#9C27B0', '#FF9800', '#00BCD4']
+                    }]
+                },
+                options: {
+                    layout: {
+                        padding: 32
+                    }
+                }
+            });
 
-                    new Chart($('#chart-total'), {
-                        type: 'line',
-                        data: {
-                            labels: addLabels,
-                            datasets: [{
-                                label: '每日累计',
-                                data: totalGrand,
-                                backgroundColor: ['#3f51b5'],
-                                borderColor: ['#3f51b5'],
-                                lineTension: .5
-                            }]
+            $('#overview-total').text(totalCount);
+
+            var dailyTotal = 0;
+
+            for (let i = 0; i < dataArr.length; i++) {
+                if (grade == 0) {
+                    for (let gradeIndex = 0; gradeIndex < dataArr[i].data.length; gradeIndex++) {
+                        for (let floorIndex = 0; floorIndex < dataArr[i].data[gradeIndex].length; floorIndex++) {
+                            dailyTotal += dataArr[i].data[gradeIndex][floorIndex];
                         }
-                    });
+                    }
+                } else {
+                    for (let floorIndex = 0; floorIndex < dataArr[i].data[grade - 1].length; floorIndex++) {
+                        dailyTotal += dataArr[i].data[grade - 1][floorIndex];
+                    }
+                }
+
+                if (i >= dataArr.length - 7) {
+                    totalGrand.push(dailyTotal);
+                }
+            }
+
+            for (let i = dataArr.length - 7; i < dataArr.length; i++) {
+                var dailyAdd = 0;
+                if (grade == 0) {
+                    for (let gradeIndex = 0; gradeIndex < dataArr[i].data.length; gradeIndex++) {
+                        for (let floorIndex = 0; floorIndex < dataArr[i].data[gradeIndex].length; floorIndex++) {
+                            dailyAdd += dataArr[i].data[gradeIndex][floorIndex];
+                        }
+                    }
+                } else {
+                    for (let floorIndex = 0; floorIndex < dataArr[i].data[grade - 1].length; floorIndex++) {
+                        dailyAdd += dataArr[i].data[grade - 1][floorIndex];
+                    }
+                }
+                addGrand.push(dailyAdd);
+                totalGrand.push(totalCount + dailyAdd);
+                addLabels.push(`${dataArr[i].date[1]}.${dataArr[i].date[2]}`);
+
+                //totalCount += dailyAdd;
+            }
+
+            if (typeof addChart != 'undefined' && typeof totalChart != 'undefined') {
+                addChart.destroy();
+                totalChart.destroy();
+            }
+
+            addChart = new Chart($('#chart-add'), {
+                type: 'line',
+                data: {
+                    labels: addLabels,
+                    datasets: [{
+                        label: '每日新增',
+                        data: addGrand,
+                        backgroundColor: ['#3f51b5'],
+                        borderColor: ['#3f51b5'],
+                        lineTension: .5
+                    }]
+                }
+            });
+
+            totalChart = new Chart($('#chart-total'), {
+                type: 'line',
+                data: {
+                    labels: addLabels,
+                    datasets: [{
+                        label: '每日累计',
+                        data: totalGrand,
+                        backgroundColor: ['#3f51b5'],
+                        borderColor: ['#3f51b5'],
+                        lineTension: .5
+                    }]
                 }
             });
         }
 
         getInit();
+
+        $('#grade-select').on('change', e => {
+            getData(parseInt(e.target.value));
+        });
     </script>
 </body>
 
