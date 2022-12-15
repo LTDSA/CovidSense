@@ -45,7 +45,7 @@
     </style>
 </head>
 
-<body>
+<body class="mdui-theme-primary-blue mdui-theme-accent-blue">
     <div class="mdui-container">
         <br />
         <div class="mdui-typo">
@@ -63,6 +63,40 @@
                 </div>
             </div>
         </div>
+        <div class="mdui-typo">
+            <h3>纵览</32>
+        </div>
+        <br />
+        <div class="mdui-card">
+            <div class="mdui-card-content">
+                <div class="mdui-row-xs-2">
+                    <div class="mdui-col">
+                        <div class="mdui-typo" style="border: 1.5px #eaeaea solid; border-radius: 4px; padding: 6px; padding-left: 8px;">
+                            <p style="margin-bottom: 2px; opacity: .64;">累计新增</p>
+                            <h2 id="overview-total" style="margin-top: 0;">0</h2>
+                        </div>
+                    </div>
+                    <div class="mdui-col">
+                        <div class="mdui-typo" style="border: 1.5px #eaeaea solid; border-radius: 4px; padding: 6px; padding-left: 8px;"">
+                            <p style="margin-bottom: 2px; opacity: .64;">今日新增</p>
+                            <h2 id="overview-add" style="margin-top: 0;">0</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mdui-row-xs-2">
+            <div class="mdui-col">
+                <div class="mdui-typo">
+                    <h3>图表</32>
+                </div>
+            </div>
+            <div class="mdui-col">
+                <select class="mdui-select mdui-float-right mdui-m-t-3">
+                    <option>全部</option>
+                </select>
+            </div>
+        </div>
         <br />
         <div class="mdui-card">
             <div class="mdui-card-content" style="padding-top: 0;">
@@ -78,8 +112,12 @@
             </div>
         </div>
         <br /><br />
-        <div class="mdui-typo" style="text-align: center; opacity: .64;">
-            <p>© TGX 2022</p>
+        <div class="mdui-typo" style="opacity: .64;">
+            <p>
+                © TGX 2022
+                <br />
+                <a href="https://github.com/LTDSA/CovidSense">项目地址</a>
+            </p>
         </div>
         <br />
     </div>
@@ -119,10 +157,21 @@
                     var totalGrand = [];
 
                     var totalCount = 0;
+
+                    res.forEach(i => {
+                        for (let gradeIndex = 0; gradeIndex < i.data.length; gradeIndex++) {
+                            for (let floorIndex = 0; floorIndex < i.data[gradeIndex].length; floorIndex++) {
+                                totalCount += i.data[gradeIndex][floorIndex];
+                            }
+                        }
+                    });
+
+                    $('#overview-total').text(totalCount);
+
                     for (let i = res.length - 7; i < res.length; i++) {
                         var dailyAdd = 0;
-                        for (let gradeIndex = 0; gradeIndex < 3; gradeIndex++) {
-                            for (let floorIndex = 0; floorIndex < 4; floorIndex++) {
+                        for (let gradeIndex = 0; gradeIndex < res[i].data.length; gradeIndex++) {
+                            for (let floorIndex = 0; floorIndex < res[i].data[gradeIndex].length; floorIndex++) {
                                 dailyAdd += res[i].data[gradeIndex][floorIndex];
                             }
                         }
@@ -130,7 +179,7 @@
                         totalGrand.push(totalCount + dailyAdd);
                         addLabels.push(`${res[i].date[1]}.${res[i].date[2]}`);
 
-                        totalCount += dailyAdd;
+                        //totalCount += dailyAdd;
                     }
 
                     new Chart($('#chart-add'), {
