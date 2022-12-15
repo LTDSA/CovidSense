@@ -245,12 +245,15 @@
                         dailyAdd += dataArr[i].data[grade - 1][floorIndex];
                     }
                 }
+
                 addGrand.push(dailyAdd);
                 totalGrand.push(totalCount + dailyAdd);
                 addLabels.push(`${dataArr[i].date[1]}.${dataArr[i].date[2]}`);
 
                 //totalCount += dailyAdd;
             }
+
+            $('#overview-add').text(addGrand[addGrand.length]);
 
             if (typeof addChart != 'undefined' && typeof totalChart != 'undefined') {
                 addChart.destroy();
