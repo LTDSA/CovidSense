@@ -53,88 +53,104 @@
             <span style="opacity: .64;">桂城中学疫情数据</span>
         </div>
         <br />
-        <div class="mdui-card">
-            <div class="mdui-card-content" style="display: flex;">
-                <i class="mdui-icon cupertino-icons"
-                    style="font-size: 36px; margin-top: 4px; margin-right: 16px;">info_circle</i>
-                <div style="display: block;">
-                    <div style="font-size: 18px;">注意</div>
-                    <div style="line-height: 1.4; margin-top: 1px;">新增病例以核酸检测或抗原自测呈阳性为判断依据，所有数据仅供参考。</div>
-                </div>
-            </div>
-        </div>
-        <br />
-        <div class="mdui-card">
-            <div class="mdui-card-content" style="display: flex;">
-                <i class="mdui-icon cupertino-icons"
-                    style="font-size: 36px; margin-top: 4px; margin-right: 16px;">person_2</i>
-                <div style="display: block;">
-                    <div style="font-size: 18px;">众志成城 抗击疫情</div>
-                    <div class="mdui-typo" style="margin: 0;">
-                        <div style="line-height: 1.4; margin-top: 1px;">如有需要，可参阅<a href="https://share.api.weibo.cn/share/355650093,4847002116951394.html">《疫情防控期九个倡议》</a>和<a href="https://share.api.weibo.cn/share/355649439,4843944388598366.html">《新冠肺炎疫情居家隔离指南》</a>。</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="mdui-typo">
-            <h3>纵览</32>
-        </div>
-        <br />
-        <div class="mdui-card">
-            <div class="mdui-card-content">
-                <div class="mdui-row-xs-2">
-                    <div class="mdui-col">
-                        <div class="mdui-typo"
-                            style="border: 1.5px #eaeaea solid; border-radius: 6px; padding: 6px; padding-left: 12px;">
-                            <p style="margin-bottom: 2px; opacity: .64;">累计新增</p>
-                            <h2 id="overview-total" style="margin-top: 0;">0</h2>
-                        </div>
-                    </div>
-                    <div class="mdui-col">
-                        <div class="mdui-typo"
-                            style="border: 1.5px #eaeaea solid; border-radius: 6px; padding: 6px; padding-left: 12px;">
-                            <p style="margin-bottom: 2px; opacity: .64;">今日新增</p>
-                            <h2 id="overview-add" style="margin-top: 0;">0</h2>
+        <div class="mdui-row-xs-1 mdui-row-lg-2">
+            <div class="mdui-col">
+                <div class="mdui-card">
+                    <div class="mdui-card-content" style="display: flex;">
+                        <i class="mdui-icon cupertino-icons"
+                            style="font-size: 36px; margin-top: 4px; margin-right: 16px;">info_circle</i>
+                        <div style="display: block;">
+                            <div style="font-size: 18px;">注意</div>
+                            <div style="line-height: 1.4; margin-top: 1px;">新增病例以核酸检测或抗原自测呈阳性为判断依据，所有数据仅供参考。</div>
                         </div>
                     </div>
                 </div>
+                <br />
+            </div>
+            <div class="mdui-col">
+                <div class="mdui-card">
+                    <div class="mdui-card-content" style="display: flex;">
+                        <i class="mdui-icon cupertino-icons"
+                            style="font-size: 36px; margin-top: 4px; margin-right: 16px;">person_2</i>
+                        <div style="display: block;">
+                            <div style="font-size: 18px;">众志成城 抗击疫情</div>
+                            <div class="mdui-typo" style="margin: 0;">
+                                <div style="line-height: 1.4; margin-top: 1px;">如有需要，可参阅<a
+                                        href="https://share.api.weibo.cn/share/355650093,4847002116951394.html">《疫情防控期九个倡议》</a>和<a
+                                        href="https://share.api.weibo.cn/share/355649439,4843944388598366.html">《新冠肺炎疫情居家隔离指南》</a>。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
             </div>
         </div>
-        <br />
-        <div class="mdui-card">
-            <div class="mdui-card-content" style="padding-top: 0;">
-                <p>病例分布情况</p>
-                <canvas id="overview-distribution"></canvas>
-            </div>
-        </div>
-        <div class="mdui-row-xs-2">
+        <div class="mdui-row-xs-1 mdui-row-lg-2">
             <div class="mdui-col">
                 <div class="mdui-typo">
-                    <h3>图表</32>
+                    <h3>纵览</32>
+                </div>
+                <br />
+                <div class="mdui-card">
+                    <div class="mdui-card-content">
+                        <div class="mdui-row-xs-2">
+                            <div class="mdui-col">
+                                <div class="mdui-typo"
+                                    style="border: 1.5px #eaeaea solid; border-radius: 6px; padding: 6px; padding-left: 12px;">
+                                    <p style="margin-bottom: 2px; opacity: .64;">累计新增</p>
+                                    <h2 id="overview-total" style="margin-top: 0;">0</h2>
+                                </div>
+                            </div>
+                            <div class="mdui-col">
+                                <div class="mdui-typo"
+                                    style="border: 1.5px #eaeaea solid; border-radius: 6px; padding: 6px; padding-left: 12px;">
+                                    <p style="margin-bottom: 2px; opacity: .64;">今日新增</p>
+                                    <h2 id="overview-add" style="margin-top: 0;">0</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="mdui-card">
+                    <div class="mdui-card-content" style="padding-top: 0;">
+                        <p>病例分布情况</p>
+                        <canvas id="overview-distribution"></canvas>
+                    </div>
                 </div>
             </div>
             <div class="mdui-col">
-                <select id="grade-select" class="mdui-select mdui-float-right mdui-m-t-3">
-                    <option value="0">全部</option>
-                    <option value="1">高一</option>
-                    <option value="2">高二</option>
-                    <option value="3">高三</option>
-                    <option value="4">教师</option>
-                </select>
-            </div>
-        </div>
-        <br />
-        <div class="mdui-card">
-            <div class="mdui-card-content" style="padding-top: 0;">
-                <p>近 7 日新增</p>
-                <canvas id="chart-add"></canvas>
-            </div>
-        </div>
-        <br />
-        <div class="mdui-card">
-            <div class="mdui-card-content" style="padding-top: 0;">
-                <p>近 7 日累计</p>
-                <canvas id="chart-total"></canvas>
+                <div class="mdui-row-xs-2">
+                    <div class="mdui-col">
+                        <div class="mdui-typo">
+                            <h3>图表</32>
+                        </div>
+                    </div>
+                    <div class="mdui-col">
+                        <select id="grade-select" class="mdui-select mdui-float-right mdui-m-t-3">
+                            <option value="0">全部</option>
+                            <option value="1">高一</option>
+                            <option value="2">高二</option>
+                            <option value="3">高三</option>
+                            <option value="4">教师</option>
+                        </select>
+                    </div>
+                </div>
+                <br />
+                <div class="mdui-card">
+                    <div class="mdui-card-content" style="padding-top: 0;">
+                        <p>近 7 日新增</p>
+                        <canvas id="chart-add"></canvas>
+                    </div>
+                </div>
+                <br />
+                <div class="mdui-card">
+                    <div class="mdui-card-content" style="padding-top: 0;">
+                        <p>近 7 日累计</p>
+                        <canvas id="chart-total"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
         <br /><br />
